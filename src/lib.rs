@@ -54,6 +54,9 @@ mod winimpl;
 #[cfg(target_os = "android")]
 #[path="android/mod.rs"]
 mod winimpl;
+#[cfg(target_os = "emscripten")]
+#[path="emscripten/mod.rs"]
+mod winimpl;
 
 mod events;
 
