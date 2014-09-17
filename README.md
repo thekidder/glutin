@@ -50,6 +50,7 @@ fn main() {
 ### Emscripten
 
  - Work will start when Emscripten gets updated to LLVM 3.5 (which should happen soon)
+ - Compilation must be done by running `rustc -o intermediate.ll --emit ir` then `emcc intermediate.ll`
 
 ### OS/X
 

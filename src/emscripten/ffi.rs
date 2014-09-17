@@ -1,5 +1,5 @@
 #![allow(dead_code)]
-#![allow(non_snake_case_functions)]
+#![allow(non_snake_case)]
 #![allow(non_camel_case_types)]
 
 use libc;
@@ -14,17 +14,17 @@ pub type em_webgl_context_callback = extern fn(libc::c_int, *const libc::c_void,
 
 #[repr(C)]
 pub struct EmscriptenWebGLContextAttributes {
-    alpha: EM_BOOL,
-    depth: EM_BOOL,
-    stencil: EM_BOOL,
-    antialias: EM_BOOL,
-    premultipliedAlpha: EM_BOOL,
-    preserveDrawingBuffer: EM_BOOL,
-    preferLowPowerToHighPerformance: EM_BOOL,
-    failIfMajorPerformanceCaveat: EM_BOOL,
-    majorVersion: libc::c_int,
-    minorVersion: libc::c_int,
-    enableExtensionsByDefault: EM_BOOL,
+    pub alpha: EM_BOOL,
+    pub depth: EM_BOOL,
+    pub stencil: EM_BOOL,
+    pub antialias: EM_BOOL,
+    pub premultipliedAlpha: EM_BOOL,
+    pub preserveDrawingBuffer: EM_BOOL,
+    pub preferLowPowerToHighPerformance: EM_BOOL,
+    pub failIfMajorPerformanceCaveat: EM_BOOL,
+    pub majorVersion: libc::c_int,
+    pub minorVersion: libc::c_int,
+    pub enableExtensionsByDefault: EM_BOOL,
 }
 
 // values for EMSCRIPTEN_RESULT
@@ -41,7 +41,7 @@ pub static EMSCRIPTEN_RESULT_NO_DATA: libc::c_int = -7;
 extern {
     pub fn emscripten_webgl_init_context_attributes(attributes: *mut EmscriptenWebGLContextAttributes);
     pub fn emscripten_webgl_create_context(target: *const libc::c_char,
-        attributes: *const EmscriptenWebGLContextAttributes);
+        attributes: *const EmscriptenWebGLContextAttributes) -> EMSCRIPTEN_WEBGL_CONTEXT_HANDLE;
 
     pub fn emscripten_webgl_make_context_current(context: EMSCRIPTEN_WEBGL_CONTEXT_HANDLE)
     -> EMSCRIPTEN_RESULT;
@@ -62,4 +62,19 @@ extern {
         -> EMSCRIPTEN_RESULT;
 
     pub fn emscripten_is_webgl_context_lost(target: *const libc::c_char) -> EM_BOOL;
+
+    // note: this function is not documented but is used by the ports of glfw, SDL and EGL
+    pub fn emscripten_GetProcAddress(name: *const libc::c_char) -> *const libc::c_void;
+
+
+    pub fn emscripten_request_fullscreen(target: *const libc::c_char,
+        deferUntilInEventHandler: EM_BOOL) -> EMSCRIPTEN_RESULT;
+
+    pub fn emscripten_exit_fullscreen() -> EMSCRIPTEN_RESULT;
+
+    pub fn emscripten_set_element_css_size(target: *const libc::c_char, width: libc::c_double,
+        height: libc::c_double) -> EMSCRIPTEN_RESULT;
+
+    pub fn emscripten_get_element_css_size(target: *const libc::c_char, width: *mut libc::c_double,
+        height: *mut libc::c_double) -> EMSCRIPTEN_RESULT;
 }
